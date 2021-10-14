@@ -2,55 +2,39 @@ import PropTypes from "prop-types";
 import React, { Component, Fragment } from "react";
 import { Link } from "react-router-dom";
 import Spinner from "../layout/Spinner";
+import Repos from "../repos/Repos";
 
 export default class User extends Component {
   static propTypes = {
     user: PropTypes.object.isRequired,
     loading: PropTypes.bool.isRequired,
     getUser: PropTypes.func.isRequired,
+    getUserRepos: PropTypes.func.isRequired,
   };
 
   componentDidMount() {
     this.props.getUser(this.props.match.params.login);
+    this.props.getUserRepos(this.props.match.params.login);
   }
 
   render() {
     const {
       login,
-      id,
-      node_id,
       avatar_url,
-      gravatar_id,
-      url,
       html_url,
-      followers_url,
-      following_url,
-      gists_url,
-      starred_url,
-      subscriptions_url,
-      organizations_url,
-      repos_url,
-      events_url,
-      received_events_url,
-      type,
-      site_admin,
       name,
       company,
       blog,
       location,
-      email,
       hireable,
       bio,
-      twitter_username,
       public_repos,
       public_gists,
       followers,
       following,
-      created_at,
-      updated_at,
     } = this.props.user;
 
-    const { loading } = this.props;
+    const { repos, loading } = this.props;
 
     if (loading) {
       return <Spinner />;
@@ -125,6 +109,7 @@ export default class User extends Component {
           <div className='badge badge-light'>Public Reps: {public_repos}</div>
           <div className='badge badge-dark'>Public Gists: {public_gists}</div>
         </div>
+        <Repos repos={repos} />
       </Fragment>
     );
   }
